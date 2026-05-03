@@ -1,7 +1,11 @@
 "use client";
 
 import { useState, useRef, useCallback } from "react";
-import { Search, Plus, Star, Archive, Trash2, RotateCcw, Trash, Pin, FileText, X, StickyNote } from "lucide-react";
+import { Pin, Star, Archive } from "lucide-react";
+import {
+  ClaySearch, ClayPlus, ClayStar, ClayStarFill, ClayArchive, ClayTrash,
+  ClayRestore, ClayFileText, ClayStickyNote, ClayPin, ClayPinFill, ClayClose,
+} from "./ClayIcons";
 import type { Note } from "@/lib/api";
 import type { View } from "./AppShell";
 
@@ -129,14 +133,14 @@ export function NoteList({ notes, view, search, selectedId, loading, onSelect, o
                 animation: animatingNew ? "bounceIn 0.4s ease" : "none"
               }}
               title="New note (⌘N)">
-              <Plus size={14} strokeWidth={3} />
+              <ClayPlus size={20} />
             </button>
           )}
         </div>
 
         {/* Search */}
         <div style={{ position: "relative" }}>
-          <Search size={13} strokeWidth={2} style={{ position: "absolute", left: 10, top: "50%", transform: "translateY(-50%)", color: "var(--text-faint)", pointerEvents: "none" }} />
+          <span style={{ position: "absolute", left: 8, top: "50%", transform: "translateY(-50%)", pointerEvents: "none", lineHeight: 0 }}><ClaySearch size={15} /></span>
           <input
             className="search-input"
             type="search"
@@ -146,8 +150,8 @@ export function NoteList({ notes, view, search, selectedId, loading, onSelect, o
           />
           {search && (
             <button onClick={() => onSearch("")}
-              style={{ position: "absolute", right: 8, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", color: "var(--text-faint)", display: "flex", padding: 3, borderRadius: 4 }}>
-              <X size={12} />
+              style={{ position: "absolute", right: 6, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", display: "flex", padding: 2, borderRadius: 4, lineHeight: 0 }}>
+              <ClayClose size={14} />
             </button>
           )}
         </div>
@@ -177,7 +181,7 @@ export function NoteList({ notes, view, search, selectedId, loading, onSelect, o
         {!loading && notes.length === 0 && (
           <div className="empty-state">
             <div className="empty-state-icon">
-              {search ? <Search size={48} strokeWidth={1} /> : <StickyNote size={48} strokeWidth={1} />}
+              {search ? <ClaySearch size={56} /> : <ClayStickyNote size={56} />}
             </div>
             <p style={{ fontSize: 14, fontWeight: 700, color: "var(--text-primary)", opacity: 0.5, marginTop: 4 }}>
               {search ? `No results for "${search}"` : emptyMessages[view]}
@@ -266,22 +270,22 @@ export function NoteList({ notes, view, search, selectedId, loading, onSelect, o
                         <div style={{ display: "flex", gap: 1, animation: "fadeIn 0.1s ease" }} onClick={e => e.stopPropagation()}>
                           {view === "trash" ? (
                             <>
-                              <ActionBtn title="Restore" onClick={() => { onRestore(note); onToast?.("Note restored", "success"); }}><RotateCcw size={11} /></ActionBtn>
-                              <ActionBtn title="Delete forever" onClick={() => { onDeleteForever(note.id); onToast?.("Deleted permanently", "warning"); }} danger><Trash size={11} /></ActionBtn>
+                              <ActionBtn title="Restore" onClick={() => { onRestore(note); onToast?.("Note restored", "success"); }}><ClayRestore size={16} /></ActionBtn>
+                              <ActionBtn title="Delete forever" onClick={() => { onDeleteForever(note.id); onToast?.("Deleted permanently", "warning"); }} danger><ClayTrash size={16} /></ActionBtn>
                             </>
                           ) : (
                             <>
                               <ActionBtn title={note.pinned ? "Unpin" : "Pin"} onClick={() => onTogglePin(note)}>
-                                <Pin size={11} style={note.pinned ? { color: "var(--pin)" } : {}} />
+                                <ClayPin size={16} />
                               </ActionBtn>
                               <ActionBtn title={note.starred ? "Unstar" : "Star"} onClick={() => onToggleStar(note)}>
-                                <Star size={11} style={note.starred ? { fill: "#f59e0b", color: "#f59e0b" } : {}} />
+                                {note.starred ? <ClayStarFill size={16} /> : <ClayStar size={16} />}
                               </ActionBtn>
                               <ActionBtn title={note.archived ? "Unarchive" : "Archive"} onClick={() => onArchive(note)}>
-                                <Archive size={11} />
+                                <ClayArchive size={16} />
                               </ActionBtn>
                               <ActionBtn title="Move to trash" onClick={() => onTrash(note)} danger>
-                                <Trash2 size={11} />
+                                <ClayTrash size={16} />
                               </ActionBtn>
                             </>
                           )}
@@ -316,11 +320,11 @@ export function NoteList({ notes, view, search, selectedId, loading, onSelect, o
             {contextMenu.note.title || "Untitled"}
           </div>
           <div className="context-divider" />
-          <ContextItem icon={<Pin size={13} />} label={contextMenu.note.pinned ? "Unpin" : "Pin"} onClick={() => { onTogglePin(contextMenu.note); closeContext(); }} />
-          <ContextItem icon={<Star size={13} />} label={contextMenu.note.starred ? "Unstar" : "Star"} onClick={() => { onToggleStar(contextMenu.note); closeContext(); }} />
-          <ContextItem icon={<Archive size={13} />} label={contextMenu.note.archived ? "Unarchive" : "Archive"} onClick={() => { onArchive(contextMenu.note); closeContext(); }} />
+          <ContextItem icon={<ClayPin size={15} />} label={contextMenu.note.pinned ? "Unpin" : "Pin"} onClick={() => { onTogglePin(contextMenu.note); closeContext(); }} />
+          <ContextItem icon={<ClayStar size={15} />} label={contextMenu.note.starred ? "Unstar" : "Star"} onClick={() => { onToggleStar(contextMenu.note); closeContext(); }} />
+          <ContextItem icon={<ClayArchive size={15} />} label={contextMenu.note.archived ? "Unarchive" : "Archive"} onClick={() => { onArchive(contextMenu.note); closeContext(); }} />
           <div className="context-divider" />
-          <ContextItem icon={<Trash2 size={13} />} label="Move to Trash" danger onClick={() => { onTrash(contextMenu.note); onToast?.("Moved to trash", "warning"); closeContext(); }} />
+          <ContextItem icon={<ClayTrash size={15} />} label="Move to Trash" danger onClick={() => { onTrash(contextMenu.note); onToast?.("Moved to trash", "warning"); closeContext(); }} />
         </div>
       )}
     </div>

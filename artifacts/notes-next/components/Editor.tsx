@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
+import { Loader2, ChevronDown } from "lucide-react";
 import {
-  Star, Archive, Trash2, FileText, Pin, Download, Type,
-  Sparkles, Loader2, X, ChevronDown, Maximize2, Minimize2, ZoomIn, ZoomOut,
-} from "lucide-react";
+  ClayStar, ClayArchive, ClayTrash, ClayFileText, ClayPin,
+  ClayDownload, ClayType, ClaySparkles, ClayAI,
+  ClayMaximize, ClayMinimize, ClayZoomIn, ClayZoomOut, ClayClose,
+} from "./ClayIcons";
 import type { Note } from "@/lib/api";
 import { hasGeminiKey, aiSummarize, aiImproveWriting, aiGenerateTitle, aiContinueWriting, aiFixGrammar, aiMakeShorter, aiMakeLonger, aiBrainstorm, aiFormatMarkdown } from "@/lib/gemini";
 import { RichTextEditor } from "./RichTextEditor";
@@ -166,8 +168,8 @@ export function Editor({ note, onChange, onToggleStar, onTogglePin, onTrash, onA
   if (!note) {
     return (
       <div className="panel-editor" style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 16 }}>
-        <div style={{ animation: "floatIcon 3s ease-in-out infinite", opacity: 0.1 }}>
-          <FileText size={58} strokeWidth={0.8} style={{ color: "var(--accent)" }} />
+        <div style={{ animation: "floatIcon 3s ease-in-out infinite", opacity: 0.55 }}>
+          <ClayFileText size={72} />
         </div>
         <div style={{ textAlign: "center" }}>
           <p style={{ fontSize: 16, fontWeight: 700, color: "var(--text-primary)", opacity: 0.4, marginBottom: 6, letterSpacing: -0.3 }}>No note selected</p>
@@ -222,7 +224,7 @@ export function Editor({ note, onChange, onToggleStar, onTogglePin, onTrash, onA
               style={{ display: "flex", alignItems: "center", gap: 5, padding: "5px 10px", borderRadius: 7, border: `1px solid ${geminiEnabled ? "rgba(99,102,241,0.4)" : "var(--border)"}`, background: showAiMenu ? "rgba(99,102,241,0.12)" : geminiEnabled ? "rgba(99,102,241,0.06)" : "none", cursor: "pointer", color: geminiEnabled ? "#818cf8" : "var(--text-muted)", fontSize: 12, fontWeight: 600, transition: "all 0.15s" }}>
               {aiLoading
                 ? <Loader2 size={12} style={{ animation: "spin 1s linear infinite", color: "#818cf8" }} />
-                : <span className="ai-sparkle"><Sparkles size={12} /></span>}
+                : <span className="ai-sparkle" style={{ lineHeight: 0 }}><ClaySparkles size={16} /></span>}
               AI
               <ChevronDown size={10} style={{ transition: "transform 0.15s", transform: showAiMenu ? "rotate(180deg)" : "none" }} />
             </button>
@@ -231,7 +233,7 @@ export function Editor({ note, onChange, onToggleStar, onTogglePin, onTrash, onA
               <div style={{ position: "absolute", top: "calc(100% + 8px)", right: 0, background: "var(--bg-editor)", border: "1px solid var(--border)", borderRadius: 13, padding: 7, zIndex: 50, width: 248, boxShadow: "0 16px 50px rgba(0,0,0,0.28)", animation: "scaleIn 0.12s ease" }}>
                 {!geminiEnabled ? (
                   <div style={{ padding: "14px 16px", textAlign: "center" }}>
-                    <Sparkles size={24} style={{ color: "#818cf8", display: "block", margin: "0 auto 10px" }} />
+                    <span style={{ display: "flex", justifyContent: "center", marginBottom: 10 }}><ClaySparkles size={36} /></span>
                     <p style={{ fontSize: 13, color: "var(--text-primary)", fontWeight: 700, marginBottom: 6 }}>AI not set up</p>
                     <p style={{ fontSize: 12, color: "var(--text-muted)", marginBottom: 12 }}>Add your Gemini API key to enable AI.</p>
                     <button onClick={() => { setShowAiMenu(false); onOpenSettings(); }}
@@ -265,35 +267,35 @@ export function Editor({ note, onChange, onToggleStar, onTogglePin, onTrash, onA
           <div style={{ width: 1, height: 16, background: "var(--border)", margin: "0 1px" }} />
 
           {/* Font size */}
-          <button className="font-ctrl-btn" onClick={() => setFontSize(f => Math.max(f - 1, 11))} title="Decrease font size (⌘-)"><ZoomOut size={12} /></button>
+          <button className="font-ctrl-btn" onClick={() => setFontSize(f => Math.max(f - 1, 11))} title="Decrease font size (⌘-)" style={{ lineHeight: 0 }}><ClayZoomOut size={17} /></button>
           <span style={{ fontSize: 10, color: "var(--text-muted)", minWidth: 22, textAlign: "center" }}>{fontSize}</span>
-          <button className="font-ctrl-btn" onClick={() => setFontSize(f => Math.min(f + 1, 24))} title="Increase font size (⌘=)"><ZoomIn size={12} /></button>
+          <button className="font-ctrl-btn" onClick={() => setFontSize(f => Math.min(f + 1, 24))} title="Increase font size (⌘=)" style={{ lineHeight: 0 }}><ClayZoomIn size={17} /></button>
 
           <div style={{ width: 1, height: 16, background: "var(--border)", margin: "0 1px" }} />
 
           <EditorBtn title="Word count" active={showWordCount} activeColor="var(--accent)" onClick={() => setShowWordCount(s => !s)}>
-            <Type size={14} />
+            <ClayType size={17} />
           </EditorBtn>
           <EditorBtn title="Zen mode (⌘⇧F)" active={zenMode} activeColor="#8b5cf6" onClick={() => setZenMode(z => !z)}>
-            {zenMode ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
+            {zenMode ? <ClayMinimize size={17} /> : <ClayMaximize size={17} />}
           </EditorBtn>
           <EditorBtn title="Export as HTML" active={false} activeColor="var(--accent)" onClick={() => { exportNote(localTitle, localContent); onToast?.("Exported as .html", "info"); }}>
-            <Download size={14} />
+            <ClayDownload size={17} />
           </EditorBtn>
 
           <div style={{ width: 1, height: 16, background: "var(--border)", margin: "0 1px" }} />
 
           <EditorBtn title={note.pinned ? "Unpin" : "Pin"} active={!!note.pinned} activeColor="var(--pin)" onClick={() => { onTogglePin(note); onToast?.(note.pinned ? "Unpinned" : "Pinned 📌", "info"); }}>
-            <Pin size={14} style={note.pinned ? { fill: "var(--pin)" } : {}} />
+            <ClayPin size={17} />
           </EditorBtn>
           <EditorBtn title={note.starred ? "Unstar" : "Star"} active={!!note.starred} activeColor="#f59e0b" onClick={() => { onToggleStar(note); onToast?.(note.starred ? "Unstarred" : "Starred ⭐", "info"); }}>
-            <Star size={14} style={note.starred ? { fill: "#f59e0b" } : {}} />
+            <ClayStar size={17} />
           </EditorBtn>
           <EditorBtn title={note.archived ? "Unarchive" : "Archive"} active={!!note.archived} activeColor="var(--accent)" onClick={() => { onArchive(note); onToast?.(note.archived ? "Unarchived" : "Archived", "info"); }}>
-            <Archive size={14} />
+            <ClayArchive size={17} />
           </EditorBtn>
           <EditorBtn title="Move to trash" active={false} activeColor="#f87171" onClick={() => { onTrash(note); onToast?.("Moved to trash", "warning"); }}>
-            <Trash2 size={14} />
+            <ClayTrash size={17} />
           </EditorBtn>
         </div>
       </div>
@@ -314,19 +316,19 @@ export function Editor({ note, onChange, onToggleStar, onTogglePin, onTrash, onA
           {aiError && (
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", color: "#f87171", fontSize: 13 }}>
               <span>⚠ {aiError}</span>
-              <button onClick={() => setAiError("")} style={{ background: "none", border: "none", cursor: "pointer", color: "#f87171", display: "flex" }}><X size={14} /></button>
+              <button onClick={() => setAiError("")} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", lineHeight: 0 }}><ClayClose size={16} /></button>
             </div>
           )}
           {aiResult && (
             <div>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
                 <span style={{ fontSize: 12, fontWeight: 700, color: "#818cf8", display: "flex", alignItems: "center", gap: 6 }}>
-                  <Sparkles size={12} /> {aiResult.label}
+                  <ClayAI size={16} /> {aiResult.label}
                 </span>
-                <button onClick={() => setAiResult(null)} style={{ background: "none", border: "none", cursor: "pointer", color: "var(--text-muted)", display: "flex", padding: 3, borderRadius: 4, transition: "background 0.1s" }}
+                <button onClick={() => setAiResult(null)} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", padding: 3, borderRadius: 4, transition: "background 0.1s", lineHeight: 0 }}
                   onMouseEnter={e => (e.currentTarget.style.background = "var(--bg-hover)")}
                   onMouseLeave={e => (e.currentTarget.style.background = "none")}>
-                  <X size={13} />
+                  <ClayClose size={15} />
                 </button>
               </div>
               <div style={{ background: "var(--bg-editor)", border: "1px solid rgba(99,102,241,0.2)", borderRadius: 8, padding: "10px 14px", fontSize: 13, color: "var(--text-primary)", lineHeight: 1.65, maxHeight: 150, overflowY: "auto", marginBottom: 10, fontFamily: "inherit", animation: "fadeInUp 0.18s ease" }}>
@@ -391,7 +393,7 @@ export function Editor({ note, onChange, onToggleStar, onTogglePin, onTrash, onA
         <div style={{ borderTop: "1px solid var(--border)", padding: "5px 32px", display: "flex", gap: 14, alignItems: "center", flexShrink: 0 }}>
           {geminiEnabled && (
             <span style={{ fontSize: 11, color: "#818cf8", display: "flex", alignItems: "center", gap: 4 }}>
-              <Sparkles size={9} /> AI ready
+              <ClaySparkles size={13} /> AI ready
             </span>
           )}
           {zenMode && <span style={{ fontSize: 11, color: "#8b5cf6", fontWeight: 600, letterSpacing: 0.3 }}>ZEN MODE</span>}
@@ -404,7 +406,7 @@ export function Editor({ note, onChange, onToggleStar, onTogglePin, onTrash, onA
     return (
       <div className="focus-mode-overlay">
         <button className="focus-exit-btn" onClick={() => { setZenMode(false); onExitFocus?.(); }}>
-          <Minimize2 size={12} /> Exit {zenMode ? "Zen" : "Focus"} Mode
+          <ClayMinimize size={14} /> Exit {zenMode ? "Zen" : "Focus"} Mode
           <span style={{ opacity: 0.6, fontSize: 10 }}>Esc</span>
         </button>
         {editorContent}

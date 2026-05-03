@@ -2,232 +2,482 @@
 
 type P = { size?: number };
 
-function Base({ size, g1, g2, dark, id, children }: {
-  size: number; g1: string; g2: string; dark: string; id: string; children: React.ReactNode;
+/*
+  ══════════════════════════════════════════════════════════════
+   Toy-like 3D SVG Icons
+   — Glossy plastic / clay style
+   — Radial-gradient body + specular gloss + cast shadow
+   — viewBox 32×32, output size controlled via `size` prop
+  ══════════════════════════════════════════════════════════════
+*/
+
+function ToyBase({
+  size, id, c1, c2, dark, children,
+}: {
+  size: number; id: string; c1: string; c2: string; dark: string; children?: React.ReactNode;
 }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width={size} height={size} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <linearGradient id={`cg-${id}`} x1="4" y1="2" x2="24" y2="27" gradientUnits="userSpaceOnUse">
-          <stop stopColor={g1} /><stop offset="1" stopColor={g2} />
-        </linearGradient>
+        <radialGradient id={`g_${id}`} cx="30%" cy="22%" r="85%" gradientUnits="objectBoundingBox">
+          <stop offset="0%" stopColor={c1} />
+          <stop offset="100%" stopColor={dark} />
+        </radialGradient>
+        <radialGradient id={`gl_${id}`} cx="26%" cy="16%" r="52%" gradientUnits="objectBoundingBox">
+          <stop offset="0%" stopColor="white" stopOpacity="0.72" />
+          <stop offset="48%" stopColor="white" stopOpacity="0.09" />
+          <stop offset="100%" stopColor="white" stopOpacity="0" />
+        </radialGradient>
+        <clipPath id={`cp_${id}`}>
+          <rect x="1.5" y="1.5" width="29" height="29" rx="9" />
+        </clipPath>
+        <filter id={`f_${id}`} x="-25%" y="-15%" width="150%" height="150%">
+          <feDropShadow dx="0" dy="3" stdDeviation="3.5" floodColor={dark} floodOpacity="0.52" />
+        </filter>
       </defs>
-      <rect x="2" y="2" width="24" height="24" rx="7.5"
-        fill={`url(#cg-${id})`}
-        style={{ filter: `drop-shadow(0px 3px 6px ${dark}88)` }} />
-      {/* Bottom depth strip */}
-      <rect x="2" y="20" width="24" height="6" rx="0" fill={dark} fillOpacity="0.18" />
-      <rect x="2" y="23.5" width="24" height="2.5" rx="0" fill="black" fillOpacity="0.07" />
-      {/* Top gloss */}
-      <ellipse cx="14" cy="8.5" rx="9.5" ry="5" fill="white" fillOpacity="0.28" />
-      {children}
+
+      {/* Cast shadow on ground */}
+      <ellipse cx="16" cy="30.5" rx="10.5" ry="1.6" fill={dark} opacity="0.28" />
+
+      {/* Body */}
+      <rect x="1.5" y="1.5" width="29" height="29" rx="9" fill={`url(#g_${id})`} filter={`url(#f_${id})`} />
+
+      {/* Inner bottom depth + gloss + icon, all clipped */}
+      <g clipPath={`url(#cp_${id})`}>
+        <rect x="1.5" y="22" width="29" height="8.5" fill="black" fillOpacity="0.11" />
+        <rect x="1.5" y="1.5" width="29" height="29" fill={`url(#gl_${id})`} />
+        {children}
+      </g>
     </svg>
   );
 }
 
-/* ── Notes ─────────────────────────────── */
+
+/* ══════════════════════════════════════════════
+   SIDEBAR NAV ICONS
+   ══════════════════════════════════════════════ */
+
+/* Notes — purple file with dog-ear */
 export function ClayNotes({ size = 28 }: P) {
   return (
-    <Base size={size} g1="#c4b5fd" g2="#6d28d9" dark="#4c1d95" id="notes">
-      <path d="M9 7h7l4 4v10H9V7z" fill="none" stroke="white" strokeWidth="1.4" strokeLinejoin="round" />
-      <path d="M16 7v4h4" fill="none" stroke="white" strokeWidth="1.3" strokeLinejoin="round" />
-      <line x1="11" y1="14" x2="17" y2="14" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeOpacity="0.9" />
-      <line x1="11" y1="17" x2="17" y2="17" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeOpacity="0.7" />
-      <line x1="11" y1="20" x2="14" y2="20" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeOpacity="0.5" />
-    </Base>
+    <ToyBase size={size} id="notes" c1="#c4b5fd" c2="#7c3aed" dark="#4c1d95">
+      {/* File body */}
+      <path d="M10 7h8l4 4.5V25H10V7z" fill="white" fillOpacity="0.92" />
+      {/* Dog-ear fold triangle */}
+      <path d="M18 7l4 4.5h-4V7z" fill="#4c1d95" fillOpacity="0.45" />
+      {/* Text lines */}
+      <rect x="12" y="14" width="7" height="1.5" rx="0.75" fill="#6d28d9" fillOpacity="0.6" />
+      <rect x="12" y="17" width="6" height="1.5" rx="0.75" fill="#6d28d9" fillOpacity="0.45" />
+      <rect x="12" y="20" width="4.5" height="1.5" rx="0.75" fill="#6d28d9" fillOpacity="0.3" />
+    </ToyBase>
   );
 }
 
-/* ── Pin ────────────────────────────────── */
+/* Pin — red map pin */
 export function ClayPin({ size = 28 }: P) {
   return (
-    <Base size={size} g1="#fca5a5" g2="#dc2626" dark="#991b1b" id="pin">
-      <circle cx="14" cy="10" r="4" fill="none" stroke="white" strokeWidth="1.4" />
-      <line x1="14" y1="14" x2="14" y2="21" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-      <line x1="11.5" y1="21" x2="16.5" y2="21" stroke="white" strokeWidth="1.4" strokeLinecap="round" />
-      <circle cx="14" cy="10" r="1.5" fill="white" fillOpacity="0.85" />
-    </Base>
+    <ToyBase size={size} id="pin" c1="#fca5a5" c2="#dc2626" dark="#7f1d1d">
+      {/* Pin drop shape */}
+      <path d="M16 6c-3.314 0-6 2.686-6 6 0 4.5 6 14 6 14s6-9.5 6-14c0-3.314-2.686-6-6-6z"
+        fill="white" fillOpacity="0.92" />
+      {/* Inner circle cutout */}
+      <circle cx="16" cy="12" r="2.5" fill="#dc2626" fillOpacity="0.55" />
+      {/* Highlight */}
+      <ellipse cx="14.2" cy="9.5" rx="1.5" ry="1" fill="white" fillOpacity="0.6" transform="rotate(-20,14.2,9.5)" />
+    </ToyBase>
   );
 }
 
-/* ── Starred ────────────────────────────── */
+/* Star — gold 5-point */
 export function ClayStar({ size = 28 }: P) {
   return (
-    <Base size={size} g1="#fde68a" g2="#d97706" dark="#92400e" id="star">
+    <ToyBase size={size} id="star" c1="#fde68a" c2="#d97706" dark="#78350f">
+      {/* Star polygon */}
       <polygon
-        points="14,5.5 16.1,11.2 22.2,11.4 17.5,15.2 19.2,21.2 14,17.8 8.8,21.2 10.5,15.2 5.8,11.4 11.9,11.2"
-        fill="white" fillOpacity="0.88" />
-    </Base>
+        points="16,6 18.47,12.18 25.22,12.36 20.11,16.68 21.99,23.22 16,19.5 10.01,23.22 11.89,16.68 6.78,12.36 13.53,12.18"
+        fill="white" fillOpacity="0.93" />
+      {/* Inner star glow highlight */}
+      <polygon
+        points="16,8.5 17.7,13.1 22.6,13.3 18.8,16.2 20.2,21.1 16,18.5 11.8,21.1 13.2,16.2 9.4,13.3 14.3,13.1"
+        fill="#fef3c7" fillOpacity="0.35" />
+    </ToyBase>
   );
 }
 
-/* ── Archived ───────────────────────────── */
+/* Archive — blue box with lid */
 export function ClayArchive({ size = 28 }: P) {
   return (
-    <Base size={size} g1="#93c5fd" g2="#1d4ed8" dark="#1e3a8a" id="archive">
-      <rect x="6" y="12" width="16" height="10" rx="2" fill="none" stroke="white" strokeWidth="1.4" />
-      <rect x="6" y="8" width="16" height="4" rx="1.5" fill="none" stroke="white" strokeWidth="1.4" />
-      <line x1="11" y1="10" x2="17" y2="10" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeOpacity="0.7" />
-      <line x1="14" y1="15" x2="14" y2="19" stroke="white" strokeWidth="1.3" strokeLinecap="round" />
-      <polyline points="12,17.5 14,19.5 16,17.5" fill="none" stroke="white" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-    </Base>
+    <ToyBase size={size} id="archive" c1="#93c5fd" c2="#2563eb" dark="#1e3a8a">
+      {/* Box body */}
+      <rect x="7" y="14" width="18" height="12" rx="2" fill="white" fillOpacity="0.92" />
+      {/* Box lid */}
+      <rect x="6" y="10" width="20" height="5" rx="1.5" fill="white" fillOpacity="0.78" />
+      {/* Lid divider */}
+      <rect x="6" y="14.5" width="20" height="0.8" fill="#1e3a8a" fillOpacity="0.18" />
+      {/* Down arrow in box */}
+      <path d="M16 17v5m0 0l-2.5-2.5M16 22l2.5-2.5"
+        stroke="#2563eb" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+      {/* Lid clasp */}
+      <rect x="13.5" y="11.5" width="5" height="2" rx="1" fill="#1e3a8a" fillOpacity="0.28" />
+    </ToyBase>
   );
 }
 
-/* ── Trash ──────────────────────────────── */
+/* Trash — rose trash can */
 export function ClayTrash({ size = 28 }: P) {
   return (
-    <Base size={size} g1="#fda4af" g2="#e11d48" dark="#9f1239" id="trash">
-      <rect x="8" y="10" width="12" height="12" rx="2" fill="none" stroke="white" strokeWidth="1.4" />
-      <line x1="6.5" y1="10" x2="21.5" y2="10" stroke="white" strokeWidth="1.4" strokeLinecap="round" />
-      <path d="M11 10V8.5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1V10" fill="none" stroke="white" strokeWidth="1.3" strokeLinecap="round" />
-      <line x1="11.5" y1="13" x2="11.5" y2="19" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeOpacity="0.85" />
-      <line x1="14" y1="13" x2="14" y2="19" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeOpacity="0.85" />
-      <line x1="16.5" y1="13" x2="16.5" y2="19" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeOpacity="0.85" />
-    </Base>
+    <ToyBase size={size} id="trash" c1="#fda4af" c2="#e11d48" dark="#9f1239">
+      {/* Can body */}
+      <rect x="8" y="11.5" width="16" height="13.5" rx="2.5" fill="white" fillOpacity="0.92" />
+      {/* Lid bar */}
+      <rect x="6.5" y="9" width="19" height="3.5" rx="1.75" fill="white" fillOpacity="0.82" />
+      {/* Handle on lid */}
+      <path d="M13 9V7.5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1V9"
+        stroke="white" strokeWidth="1.5" strokeLinecap="round" fill="none" />
+      {/* Can lines */}
+      <rect x="12" y="14" width="1.5" height="8" rx="0.75" fill="#e11d48" fillOpacity="0.5" />
+      <rect x="15.25" y="14" width="1.5" height="8" rx="0.75" fill="#e11d48" fillOpacity="0.5" />
+      <rect x="18.5" y="14" width="1.5" height="8" rx="0.75" fill="#e11d48" fillOpacity="0.5" />
+    </ToyBase>
   );
 }
 
-/* ── Hash / Tag ─────────────────────────── */
+/* Hash / Tag — emerald # */
 export function ClayHash({ size = 28 }: P) {
   return (
-    <Base size={size} g1="#6ee7b7" g2="#059669" dark="#064e3b" id="hash">
-      <line x1="11" y1="7" x2="9" y2="21" stroke="white" strokeWidth="1.6" strokeLinecap="round" />
-      <line x1="17" y1="7" x2="15" y2="21" stroke="white" strokeWidth="1.6" strokeLinecap="round" />
-      <line x1="7.5" y1="12" x2="20.5" y2="12" stroke="white" strokeWidth="1.4" strokeLinecap="round" />
-      <line x1="7" y1="17" x2="20" y2="17" stroke="white" strokeWidth="1.4" strokeLinecap="round" />
-    </Base>
+    <ToyBase size={size} id="hash" c1="#6ee7b7" c2="#059669" dark="#064e3b">
+      <path d="M12 7L10 25" stroke="white" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M20 7L18 25" stroke="white" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M8 13.5h16" stroke="white" strokeWidth="2.2" strokeLinecap="round" />
+      <path d="M7.5 19.5h16" stroke="white" strokeWidth="2.2" strokeLinecap="round" />
+    </ToyBase>
   );
 }
 
-/* ── Settings / Gear ────────────────────── */
+/* Settings — slate gear */
 export function ClaySettings({ size = 28 }: P) {
   return (
-    <Base size={size} g1="#e2e8f0" g2="#64748b" dark="#334155" id="settings">
-      <path
-        d="M14 9a5 5 0 1 0 0 10A5 5 0 0 0 14 9z"
-        fill="none" stroke="white" strokeWidth="1.4" />
-      <circle cx="14" cy="14" r="2" fill="white" fillOpacity="0.9" />
-      {[0,60,120,180,240,300].map((deg, i) => {
-        const rad = (deg * Math.PI) / 180;
-        const x1 = 14 + 5.5 * Math.cos(rad);
-        const y1 = 14 + 5.5 * Math.sin(rad);
-        const x2 = 14 + 7.5 * Math.cos(rad);
-        const y2 = 14 + 7.5 * Math.sin(rad);
-        return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="white" strokeWidth="2.2" strokeLinecap="round" />;
+    <ToyBase size={size} id="settings" c1="#e2e8f0" c2="#475569" dark="#1e293b">
+      {/* Gear teeth via polygon approximation */}
+      <path d="M16 9.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13z" fill="white" fillOpacity="0.9" />
+      {/* Gear teeth */}
+      {[0, 45, 90, 135, 180, 225, 270, 315].map((deg, i) => {
+        const r = Math.PI / 180 * deg;
+        const cos = Math.cos(r), sin = Math.sin(r);
+        const cx = 16 + 7.2 * cos, cy = 16 + 7.2 * sin;
+        const w = 1.6;
+        return (
+          <rect
+            key={i}
+            x={cx - w / 2} y={cy - w / 2}
+            width={w} height={w + 2.4}
+            rx="0.8"
+            fill="white" fillOpacity="0.9"
+            transform={`rotate(${deg},${cx},${cy})`}
+          />
+        );
       })}
-    </Base>
+      {/* Center axle hole */}
+      <circle cx="16" cy="16" r="2.8" fill="#475569" fillOpacity="0.55" />
+      <circle cx="16" cy="16" r="1.4" fill="white" fillOpacity="0.7" />
+    </ToyBase>
   );
 }
 
-/* ── Keyboard / Shortcuts ───────────────── */
+/* Keyboard — indigo keys */
 export function ClayKeyboard({ size = 28 }: P) {
   return (
-    <Base size={size} g1="#c7d2fe" g2="#4338ca" dark="#312e81" id="keyboard">
-      <rect x="5" y="9" width="18" height="12" rx="2.5" fill="none" stroke="white" strokeWidth="1.4" />
-      {/* top row keys */}
-      {[7,10,13,16,19].map((x, i) => (
-        <rect key={i} x={x} y={11} width="2" height="2" rx="0.6" fill="white" fillOpacity="0.8" />
-      ))}
-      {/* mid row */}
-      {[7.5,10.5,13.5,16.5].map((x, i) => (
-        <rect key={i} x={x} y={14.5} width="2" height="2" rx="0.6" fill="white" fillOpacity="0.8" />
-      ))}
-      {/* space bar */}
-      <rect x="9" y="18" width="10" height="2" rx="0.8" fill="white" fillOpacity="0.8" />
-    </Base>
+    <ToyBase size={size} id="keyboard" c1="#c7d2fe" c2="#4338ca" dark="#312e81">
+      {/* Body */}
+      <rect x="5" y="9" width="22" height="15" rx="3" fill="white" fillOpacity="0.9" />
+      {/* Key rows */}
+      {[8, 11.5, 14.5].map((x, row) =>
+        [x, x + 3.2, x + 6.4, x + 9.6, x + 12.8].slice(0, row === 2 ? 4 : 5).map((kx, ki) => (
+          <rect key={`${row}-${ki}`} x={kx} y={11.5 + row * 3.2} width="2.5" height="2.2" rx="0.6"
+            fill="#4338ca" fillOpacity={0.35 - row * 0.06} />
+        ))
+      )}
+      {/* Space bar */}
+      <rect x="9" y="20.2" width="14" height="2.2" rx="0.8" fill="#4338ca" fillOpacity="0.3" />
+    </ToyBase>
   );
 }
 
-/* ── Home ───────────────────────────────── */
+/* Home — violet house */
 export function ClayHome({ size = 28 }: P) {
   return (
-    <Base size={size} g1="#ddd6fe" g2="#7c3aed" dark="#5b21b6" id="home">
-      <path d="M14 6L6 13h2v8h5v-5h2v5h5v-8h2L14 6z" fill="none" stroke="white" strokeWidth="1.4" strokeLinejoin="round" />
-      <rect x="12.5" y="18" width="3" height="3" rx="0.5" fill="white" fillOpacity="0.8" />
-    </Base>
+    <ToyBase size={size} id="home" c1="#ddd6fe" c2="#7c3aed" dark="#4c1d95">
+      {/* Roof */}
+      <path d="M16 6L5 15h3v11h16V15h3L16 6z" fill="white" fillOpacity="0.92" />
+      {/* Door */}
+      <rect x="13" y="19" width="6" height="7" rx="1.5" fill="#7c3aed" fillOpacity="0.4" />
+      {/* Window */}
+      <rect x="9" y="16" width="4" height="3.5" rx="1" fill="#7c3aed" fillOpacity="0.35" />
+      {/* Roof shadow */}
+      <path d="M16 6L5 15h3l8-7.5 8 7.5h3L16 6z" fill="white" fillOpacity="0.22" />
+    </ToyBase>
   );
 }
 
-/* ── Sun ────────────────────────────────── */
+/* Sun — amber with rays */
 export function ClaySun({ size = 28 }: P) {
   return (
-    <Base size={size} g1="#fef08a" g2="#ca8a04" dark="#92400e" id="sun">
-      <circle cx="14" cy="14" r="4" fill="white" fillOpacity="0.88" />
+    <ToyBase size={size} id="sun" c1="#fef08a" c2="#f59e0b" dark="#92400e">
+      {/* Rays */}
       {[0, 45, 90, 135, 180, 225, 270, 315].map((deg, i) => {
-        const rad = (deg * Math.PI) / 180;
-        const x1 = 14 + 5.5 * Math.cos(rad);
-        const y1 = 14 + 5.5 * Math.sin(rad);
-        const x2 = 14 + 7.5 * Math.cos(rad);
-        const y2 = 14 + 7.5 * Math.sin(rad);
-        return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeOpacity="0.9" />;
+        const r = Math.PI / 180 * deg;
+        const x1 = 16 + 7.5 * Math.cos(r), y1 = 16 + 7.5 * Math.sin(r);
+        const x2 = 16 + 10.5 * Math.cos(r), y2 = 16 + 10.5 * Math.sin(r);
+        return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeOpacity="0.9" />;
       })}
-    </Base>
+      {/* Sun disc */}
+      <circle cx="16" cy="16" r="5.5" fill="white" fillOpacity="0.95" />
+      {/* Inner highlight */}
+      <circle cx="14.5" cy="14" r="2" fill="white" fillOpacity="0.45" />
+    </ToyBase>
   );
 }
 
-/* ── Moon ───────────────────────────────── */
+/* Moon — dark blue crescent */
 export function ClayMoon({ size = 28 }: P) {
   return (
-    <Base size={size} g1="#bfdbfe" g2="#1e40af" dark="#1e3a8a" id="moon">
-      <path d="M18 14.5a7 7 0 1 1-8.5-8.5A6 6 0 0 0 18 14.5z" fill="white" fillOpacity="0.88" />
-    </Base>
+    <ToyBase size={size} id="moon" c1="#bfdbfe" c2="#1d4ed8" dark="#1e3a8a">
+      {/* Crescent: big circle minus smaller offset circle */}
+      <path d="M21 16.5a8 8 0 1 1-11-7.5 6 6 0 0 0 11 7.5z" fill="white" fillOpacity="0.92" />
+      {/* Stars */}
+      <circle cx="21" cy="9" r="1.1" fill="white" fillOpacity="0.7" />
+      <circle cx="24" cy="13" r="0.7" fill="white" fillOpacity="0.55" />
+      <circle cx="22.5" cy="18" r="0.8" fill="white" fillOpacity="0.5" />
+    </ToyBase>
   );
 }
 
-/* ── Book / Brand logo ──────────────────── */
+/* Book — teal open book */
 export function ClayBook({ size = 28 }: P) {
   return (
-    <Base size={size} g1="#a5b4fc" g2="#4338ca" dark="#312e81" id="book">
-      <path d="M8 6h12a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1z"
-        fill="none" stroke="white" strokeWidth="1.4" />
-      <line x1="7" y1="10" x2="21" y2="10" stroke="white" strokeWidth="1.2" strokeOpacity="0.55" />
-      {/* Bookmark ribbon */}
-      <path d="M17 6v8l-3-2.5L11 14V6" fill="none" stroke="white" strokeWidth="1.4" strokeLinejoin="round" />
-    </Base>
+    <ToyBase size={size} id="book" c1="#2dd4bf" c2="#0d9488" dark="#134e4a">
+      {/* Left page */}
+      <path d="M7 8h8v17H7a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z" fill="white" fillOpacity="0.92" />
+      {/* Right page */}
+      <path d="M25 8h-8v17h8a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1z" fill="white" fillOpacity="0.82" />
+      {/* Spine */}
+      <rect x="14.5" y="8" width="3" height="17" fill="#0d9488" fillOpacity="0.3" />
+      {/* Lines on left */}
+      <rect x="9" y="12" width="4" height="1.2" rx="0.6" fill="#0d9488" fillOpacity="0.35" />
+      <rect x="9" y="15" width="4" height="1.2" rx="0.6" fill="#0d9488" fillOpacity="0.28" />
+      <rect x="9" y="18" width="3" height="1.2" rx="0.6" fill="#0d9488" fillOpacity="0.22" />
+      {/* Lines on right */}
+      <rect x="19" y="12" width="4" height="1.2" rx="0.6" fill="#0d9488" fillOpacity="0.28" />
+      <rect x="19" y="15" width="4" height="1.2" rx="0.6" fill="#0d9488" fillOpacity="0.22" />
+    </ToyBase>
   );
 }
 
-/* ── Plus ───────────────────────────────── */
+/* Plus — green cross */
 export function ClayPlus({ size = 22 }: P) {
   return (
-    <Base size={size} g1="#a7f3d0" g2="#059669" dark="#064e3b" id="plus">
-      <line x1="14" y1="9" x2="14" y2="19" stroke="white" strokeWidth="1.8" strokeLinecap="round" />
-      <line x1="9" y1="14" x2="19" y2="14" stroke="white" strokeWidth="1.8" strokeLinecap="round" />
-    </Base>
+    <ToyBase size={size} id="plus" c1="#86efac" c2="#16a34a" dark="#14532d">
+      <rect x="14" y="8.5" width="4" height="15" rx="2" fill="white" fillOpacity="0.92" />
+      <rect x="8.5" y="14" width="15" height="4" rx="2" fill="white" fillOpacity="0.92" />
+    </ToyBase>
   );
 }
 
-/* ── Brain / AI ─────────────────────────── */
+/* Brain / AI — pink brain */
 export function ClayBrain({ size = 28 }: P) {
   return (
-    <Base size={size} g1="#f5d0fe" g2="#a21caf" dark="#86198f" id="brain">
-      <path d="M14 8c-3 0-5 2-5 4.5 0 1.2.5 2.2 1.2 3-.3.5-.2 1.2.5 1.8 0 1.5 1.5 2.7 3.3 2.7s3.3-1.2 3.3-2.7c.7-.6.8-1.3.5-1.8C18.5 14.7 19 13.7 19 12.5c0-2.5-2-4.5-5-4.5z"
-        fill="none" stroke="white" strokeWidth="1.4" strokeLinejoin="round" />
-      <line x1="14" y1="12" x2="14" y2="16" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeOpacity="0.7" />
-      <line x1="11.5" y1="13.5" x2="16.5" y2="13.5" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeOpacity="0.7" />
-      <circle cx="11.5" cy="11.5" r="0.8" fill="white" fillOpacity="0.7" />
-      <circle cx="16.5" cy="11.5" r="0.8" fill="white" fillOpacity="0.7" />
-    </Base>
+    <ToyBase size={size} id="brain" c1="#f0abfc" c2="#a21caf" dark="#701a75">
+      <path d="M16 7c-1.6 0-3 0.7-4 1.8a4.5 4.5 0 0 0-4.5 4.2c-1 0.6-1.5 1.7-1.5 2.8 0 1.5 0.8 2.8 2 3.4 0 2.3 1.8 4 4 4h1l1 2h2l1-2h1c2.2 0 4-1.7 4-4 1.2-0.6 2-1.9 2-3.4 0-1.1-0.5-2.2-1.5-2.8A4.5 4.5 0 0 0 20 8.8C19 7.7 17.6 7 16 7z"
+        fill="white" fillOpacity="0.92" />
+      {/* Brain folds */}
+      <path d="M13 13c0 1.5 0.7 2.5 2 3" stroke="#a21caf" strokeWidth="1.1" strokeLinecap="round" fill="none" strokeOpacity="0.5" />
+      <path d="M19 13c0 1.5-0.7 2.5-2 3" stroke="#a21caf" strokeWidth="1.1" strokeLinecap="round" fill="none" strokeOpacity="0.5" />
+      <path d="M12 17.5h8" stroke="#a21caf" strokeWidth="1" strokeLinecap="round" fill="none" strokeOpacity="0.35" />
+    </ToyBase>
   );
 }
 
-/* ── Sparkles / Magic ───────────────────── */
+/* Sparkles — purple magic star */
 export function ClaySparkles({ size = 28 }: P) {
   return (
-    <Base size={size} g1="#e9d5ff" g2="#9333ea" dark="#6b21a8" id="sparkles">
-      <path d="M14 6l1.2 4.8 4.8 1.2-4.8 1.2L14 18l-1.2-4.8L8 12l4.8-1.2L14 6z" fill="white" fillOpacity="0.9" />
-      <circle cx="19.5" cy="8.5" r="1.2" fill="white" fillOpacity="0.7" />
-      <circle cx="9" cy="18.5" r="1" fill="white" fillOpacity="0.6" />
-    </Base>
+    <ToyBase size={size} id="sparkles" c1="#e879f9" c2="#9333ea" dark="#581c87">
+      {/* Big 4-point star */}
+      <path d="M16 6l2 8 8 2-8 2-2 8-2-8-8-2 8-2 2-8z" fill="white" fillOpacity="0.93" />
+      {/* Small stars */}
+      <path d="M24 6l0.8 2.2 2.2 0.8-2.2 0.8L24 12l-0.8-2.2L21 9l2.2-0.8L24 6z"
+        fill="white" fillOpacity="0.7" />
+      <circle cx="8.5" cy="22.5" r="1.8" fill="white" fillOpacity="0.6" />
+      <circle cx="24" cy="22" r="1.2" fill="white" fillOpacity="0.5" />
+    </ToyBase>
   );
 }
 
-/* ── Collapse (ChevronLeft inside pill) ──── */
+/* Collapse — slate left chevron */
 export function ClayCollapse({ size = 28 }: P) {
   return (
-    <Base size={size} g1="#f1f5f9" g2="#94a3b8" dark="#475569" id="collapse">
-      <polyline points="16,9 11,14 16,19" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-    </Base>
+    <ToyBase size={size} id="collapse" c1="#f1f5f9" c2="#64748b" dark="#334155">
+      <path d="M19 8.5L12 16l7 7.5" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+    </ToyBase>
+  );
+}
+
+/* ══════════════════════════════════════════════
+   ACTION / TOOLBAR ICONS
+   ══════════════════════════════════════════════ */
+
+/* Search — blue magnifying glass */
+export function ClaySearch({ size = 20 }: P) {
+  return (
+    <ToyBase size={size} id="search" c1="#7dd3fc" c2="#0284c7" dark="#0c4a6e">
+      {/* Glass lens */}
+      <circle cx="14.5" cy="13.5" r="5.5" fill="white" fillOpacity="0.92" />
+      <circle cx="14.5" cy="13.5" r="3.5" fill="#0284c7" fillOpacity="0.28" />
+      {/* Highlight on lens */}
+      <ellipse cx="12.5" cy="11.5" rx="1.8" ry="1.2" fill="white" fillOpacity="0.55" transform="rotate(-30,12.5,11.5)" />
+      {/* Handle */}
+      <path d="M18.5 18.5L23.5 23.5" stroke="white" strokeWidth="3" strokeLinecap="round" />
+    </ToyBase>
+  );
+}
+
+/* StarFill — filled star (used when starred) */
+export function ClayStarFill({ size = 20 }: P) {
+  return (
+    <ToyBase size={size} id="starfill" c1="#fde68a" c2="#f59e0b" dark="#78350f">
+      <polygon
+        points="16,6.5 18.4,12.2 24.6,12.4 20,16.3 21.8,22.6 16,19.2 10.2,22.6 12,16.3 7.4,12.4 13.6,12.2"
+        fill="white" fillOpacity="0.95" />
+    </ToyBase>
+  );
+}
+
+/* Restore — teal restore arrows */
+export function ClayRestore({ size = 20 }: P) {
+  return (
+    <ToyBase size={size} id="restore" c1="#5eead4" c2="#0d9488" dark="#134e4a">
+      <path d="M10 16a6 6 0 1 1 1.5 4" stroke="white" strokeWidth="2.5" strokeLinecap="round" fill="none" />
+      <polyline points="7,12 10,16 14,13" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+    </ToyBase>
+  );
+}
+
+/* Download — green download arrow */
+export function ClayDownload({ size = 20 }: P) {
+  return (
+    <ToyBase size={size} id="download" c1="#86efac" c2="#16a34a" dark="#14532d">
+      <path d="M16 8v13" stroke="white" strokeWidth="2.5" strokeLinecap="round" />
+      <polyline points="11,17 16,22 21,17" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+      <path d="M9 25h14" stroke="white" strokeWidth="2.5" strokeLinecap="round" />
+    </ToyBase>
+  );
+}
+
+/* Type / WordCount — slate "T" */
+export function ClayType({ size = 20 }: P) {
+  return (
+    <ToyBase size={size} id="type" c1="#e2e8f0" c2="#64748b" dark="#1e293b">
+      <path d="M8 9h16v3h-6.5v13h-3V12H8V9z" fill="white" fillOpacity="0.92" />
+    </ToyBase>
+  );
+}
+
+/* Maximize (zen on) — purple expand */
+export function ClayMaximize({ size = 20 }: P) {
+  return (
+    <ToyBase size={size} id="maximize" c1="#c084fc" c2="#7c3aed" dark="#4c1d95">
+      <path d="M19 8h5v5M13 24H8v-5" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+      <path d="M24 8l-7 7M8 24l7-7" stroke="white" strokeWidth="2.2" strokeLinecap="round" fill="none" />
+    </ToyBase>
+  );
+}
+
+/* Minimize (zen off) — purple compress */
+export function ClayMinimize({ size = 20 }: P) {
+  return (
+    <ToyBase size={size} id="minimize" c1="#c084fc" c2="#7c3aed" dark="#4c1d95">
+      <path d="M19 13h5M19 13v-5" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+      <path d="M13 19H8M13 19v5" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+      <path d="M19 13l-6 6" stroke="white" strokeWidth="2.2" strokeLinecap="round" fill="none" />
+    </ToyBase>
+  );
+}
+
+/* ZoomIn — blue + magnifier */
+export function ClayZoomIn({ size = 20 }: P) {
+  return (
+    <ToyBase size={size} id="zoomin" c1="#93c5fd" c2="#2563eb" dark="#1e3a8a">
+      <circle cx="14" cy="13.5" r="5.5" fill="white" fillOpacity="0.88" />
+      <path d="M14 10.5v6M11 13.5h6" stroke="#2563eb" strokeWidth="1.8" strokeLinecap="round" />
+      <path d="M18.5 18.5L23 23" stroke="white" strokeWidth="3" strokeLinecap="round" />
+    </ToyBase>
+  );
+}
+
+/* ZoomOut — blue - magnifier */
+export function ClayZoomOut({ size = 20 }: P) {
+  return (
+    <ToyBase size={size} id="zoomout" c1="#93c5fd" c2="#2563eb" dark="#1e3a8a">
+      <circle cx="14" cy="13.5" r="5.5" fill="white" fillOpacity="0.88" />
+      <path d="M11 13.5h6" stroke="#2563eb" strokeWidth="1.8" strokeLinecap="round" />
+      <path d="M18.5 18.5L23 23" stroke="white" strokeWidth="3" strokeLinecap="round" />
+    </ToyBase>
+  );
+}
+
+/* Close / X — red cross */
+export function ClayClose({ size = 18 }: P) {
+  return (
+    <ToyBase size={size} id="close" c1="#fda4af" c2="#e11d48" dark="#9f1239">
+      <path d="M10 10l12 12M22 10L10 22" stroke="white" strokeWidth="2.8" strokeLinecap="round" />
+    </ToyBase>
+  );
+}
+
+/* FileText — blue document with lines */
+export function ClayFileText({ size = 24 }: P) {
+  return (
+    <ToyBase size={size} id="filetext" c1="#bfdbfe" c2="#3b82f6" dark="#1e3a8a">
+      <path d="M9 6h9.5l5 5.5V26H9V6z" fill="white" fillOpacity="0.92" />
+      <path d="M18.5 6l5 5.5h-5V6z" fill="#1e3a8a" fillOpacity="0.4" />
+      <rect x="11.5" y="14" width="8" height="1.4" rx="0.7" fill="#3b82f6" fillOpacity="0.55" />
+      <rect x="11.5" y="17" width="7" height="1.4" rx="0.7" fill="#3b82f6" fillOpacity="0.42" />
+      <rect x="11.5" y="20" width="5" height="1.4" rx="0.7" fill="#3b82f6" fillOpacity="0.3" />
+    </ToyBase>
+  );
+}
+
+/* PinFill — pin for inline badge */
+export function ClayPinFill({ size = 18 }: P) {
+  return (
+    <ToyBase size={size} id="pinfill" c1="#fca5a5" c2="#dc2626" dark="#7f1d1d">
+      <path d="M16 6c-3.314 0-6 2.686-6 6 0 4.5 6 14 6 14s6-9.5 6-14c0-3.314-2.686-6-6-6z"
+        fill="white" fillOpacity="0.92" />
+      <circle cx="16" cy="12" r="2.5" fill="#dc2626" fillOpacity="0.5" />
+    </ToyBase>
+  );
+}
+
+/* StickyNote — amber sticky note (empty state) */
+export function ClayStickyNote({ size = 48 }: P) {
+  return (
+    <ToyBase size={size} id="stickynote" c1="#fde68a" c2="#f59e0b" dark="#92400e">
+      <rect x="7" y="6" width="18" height="20" rx="2.5" fill="white" fillOpacity="0.92" />
+      <path d="M19 6v6l6 0" fill="none" stroke="white" strokeWidth="1.3" strokeLinejoin="round" />
+      <path d="M25 12l-6-6" fill="none" stroke="white" strokeWidth="1.3" strokeLinecap="round" />
+      <rect x="10" y="11" width="8" height="1.3" rx="0.65" fill="#f59e0b" fillOpacity="0.5" />
+      <rect x="10" y="14" width="7" height="1.3" rx="0.65" fill="#f59e0b" fillOpacity="0.38" />
+      <rect x="10" y="17" width="5" height="1.3" rx="0.65" fill="#f59e0b" fillOpacity="0.28" />
+    </ToyBase>
+  );
+}
+
+/* AI/Loader spinner — violet sparkle ring */
+export function ClayAI({ size = 20 }: P) {
+  return (
+    <ToyBase size={size} id="ai" c1="#e879f9" c2="#9333ea" dark="#581c87">
+      <path d="M16 7l1.8 7 7 1.8-7 1.8L16 25l-1.8-7-7-1.8 7-1.8L16 7z" fill="white" fillOpacity="0.92" />
+      <circle cx="23" cy="8" r="1.6" fill="white" fillOpacity="0.65" />
+      <circle cx="9.5" cy="23" r="1.2" fill="white" fillOpacity="0.55" />
+    </ToyBase>
   );
 }

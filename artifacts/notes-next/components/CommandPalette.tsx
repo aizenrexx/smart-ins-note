@@ -1,7 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { FileText, Plus, Star, Archive, Trash2, Pin, Settings, Search, Keyboard, Sun, Moon, Eye, Zap, Focus } from "lucide-react";
+import {
+  ClayFileText, ClayPlus, ClayStar, ClayPin, ClaySettings,
+  ClaySearch, ClayKeyboard, ClaySun, ClayMoon, ClayMaximize,
+} from "./ClayIcons";
 import type { Note } from "@/lib/api";
 
 interface Action {
@@ -47,11 +50,11 @@ export function CommandPalette({ notes, dark, onClose, onSelectNote, onNewNote, 
   const listRef = useRef<HTMLDivElement>(null);
 
   const actions: Action[] = [
-    { id: "new", label: "New Note", icon: <Plus size={14} />, section: "Actions", keywords: "create add", onSelect: () => { onNewNote(); onClose(); } },
-    { id: "settings", label: "AI Settings", icon: <Settings size={14} />, section: "Actions", keywords: "gemini api key", onSelect: () => { onOpenSettings(); onClose(); } },
-    { id: "theme", label: dark ? "Switch to Light Mode" : "Switch to Dark Mode", icon: dark ? <Sun size={14} /> : <Moon size={14} />, section: "Actions", keywords: "theme dark light", onSelect: () => { onToggleTheme(); onClose(); } },
-    { id: "focus", label: "Focus Mode", icon: <Focus size={14} />, section: "Actions", keywords: "zen distraction free", onSelect: () => { onToggleFocus(); onClose(); } },
-    { id: "shortcuts", label: "Keyboard Shortcuts", icon: <Keyboard size={14} />, section: "Actions", keywords: "hotkey", onSelect: () => { onShowShortcuts(); onClose(); } },
+    { id: "new", label: "New Note", icon: <ClayPlus size={16} />, section: "Actions", keywords: "create add", onSelect: () => { onNewNote(); onClose(); } },
+    { id: "settings", label: "AI Settings", icon: <ClaySettings size={16} />, section: "Actions", keywords: "gemini api key", onSelect: () => { onOpenSettings(); onClose(); } },
+    { id: "theme", label: dark ? "Switch to Light Mode" : "Switch to Dark Mode", icon: dark ? <ClaySun size={16} /> : <ClayMoon size={16} />, section: "Actions", keywords: "theme dark light", onSelect: () => { onToggleTheme(); onClose(); } },
+    { id: "focus", label: "Focus Mode", icon: <ClayMaximize size={16} />, section: "Actions", keywords: "zen distraction free", onSelect: () => { onToggleFocus(); onClose(); } },
+    { id: "shortcuts", label: "Keyboard Shortcuts", icon: <ClayKeyboard size={16} />, section: "Actions", keywords: "hotkey", onSelect: () => { onShowShortcuts(); onClose(); } },
   ];
 
   const matchedNotes = notes
@@ -98,7 +101,7 @@ export function CommandPalette({ notes, dark, onClose, onSelectNote, onNewNote, 
     <div className="cmd-backdrop" onClick={onClose}>
       <div className="cmd-palette" onClick={e => e.stopPropagation()}>
         <div style={{ position: "relative" }}>
-          <Search size={16} style={{ position: "absolute", left: 20, top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)", pointerEvents: "none" }} />
+          <span style={{ position: "absolute", left: 16, top: "50%", transform: "translateY(-50%)", pointerEvents: "none", lineHeight: 0 }}><ClaySearch size={18} /></span>
           <input
             ref={inputRef}
             className="cmd-input"
@@ -131,15 +134,15 @@ export function CommandPalette({ notes, dark, onClose, onSelectNote, onNewNote, 
                   }}
                   onMouseEnter={() => setFocused(idx)}>
                   <span style={{ color: "var(--text-muted)", display: "flex", flexShrink: 0 }}>
-                    {entry.type === "action" ? entry.item.icon : <FileText size={14} />}
+                    {entry.type === "action" ? entry.item.icon : <ClayFileText size={15} />}
                   </span>
                   <span style={{ flex: 1, fontSize: 14, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                     {entry.type === "note"
                       ? highlight((entry.item as Note).title || "Untitled", query)
                       : entry.item.label}
                   </span>
-                  {entry.type === "note" && (entry.item as Note).starred && <Star size={10} style={{ color: "#f59e0b", fill: "#f59e0b", flexShrink: 0 }} />}
-                  {entry.type === "note" && (entry.item as Note).pinned && <Pin size={10} style={{ color: "var(--pin)", fill: "var(--pin)", flexShrink: 0 }} />}
+                  {entry.type === "note" && (entry.item as Note).starred && <ClayStar size={13} />}
+                  {entry.type === "note" && (entry.item as Note).pinned && <ClayPin size={13} />}
                 </div>
               </div>
             );

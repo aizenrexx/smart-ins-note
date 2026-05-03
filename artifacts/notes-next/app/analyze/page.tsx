@@ -475,8 +475,8 @@ export default function AnalyzePage() {
                   })}
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", marginTop: 5 }}>
-                  {["12a","3a","6a","9a","12p","3p","6p","9p","12a"].map(l => (
-                    <span key={l} style={{ fontSize: 9.5, color: "var(--text-faint)", fontWeight: 600 }}>{l}</span>
+                  {["12a","3a","6a","9a","12p","3p","6p","9p","11p"].map((l, i) => (
+                    <span key={i} style={{ fontSize: 9.5, color: "var(--text-faint)", fontWeight: 600 }}>{l}</span>
                   ))}
                 </div>
 

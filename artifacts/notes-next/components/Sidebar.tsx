@@ -254,21 +254,21 @@ export function Sidebar({ view, activeTagId, tags, counts, onViewChange, onTagCl
       {/* Footer */}
       <div style={{ padding: "10px 10px 12px", display: "flex", flexDirection: "column", gap: 2, borderTop: "1px solid var(--border)" }}>
 
-        {/* AI Settings */}
-        <button onClick={onOpenSettings}
+        {/* Settings */}
+        <Link href="/notes-next/settings"
           style={{
             background: "linear-gradient(135deg,rgba(99,102,241,0.12),rgba(139,92,246,0.12))",
             border: "1px solid rgba(99,102,241,0.22)", borderRadius: 10,
             padding: "7px 10px", cursor: "pointer", color: "var(--accent)",
             fontSize: 11.5, display: "flex", alignItems: "center", gap: 9,
-            width: "100%", fontWeight: 600, transition: "all 0.15s",
+            fontWeight: 600, transition: "all 0.15s", textDecoration: "none",
           }}
-          onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "linear-gradient(135deg,rgba(99,102,241,0.2),rgba(139,92,246,0.2))"; (e.currentTarget as HTMLElement).style.boxShadow = "0 0 16px rgba(99,102,241,0.18)"; }}
-          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "linear-gradient(135deg,rgba(99,102,241,0.12),rgba(139,92,246,0.12))"; (e.currentTarget as HTMLElement).style.boxShadow = "none"; }}>
+          onMouseEnter={(e: React.MouseEvent) => { (e.currentTarget as HTMLElement).style.background = "linear-gradient(135deg,rgba(99,102,241,0.2),rgba(139,92,246,0.2))"; (e.currentTarget as HTMLElement).style.boxShadow = "0 0 16px rgba(99,102,241,0.18)"; }}
+          onMouseLeave={(e: React.MouseEvent) => { (e.currentTarget as HTMLElement).style.background = "linear-gradient(135deg,rgba(99,102,241,0.12),rgba(139,92,246,0.12))"; (e.currentTarget as HTMLElement).style.boxShadow = "none"; }}>
           <ClaySettings size={22} />
-          AI Settings
+          Settings
           <span style={{ marginLeft: "auto", fontSize: 10, opacity: 0.55, fontWeight: 400 }}>⌘,</span>
-        </button>
+        </Link>
 
         {/* Shortcuts */}
         <button onClick={onShowShortcuts}

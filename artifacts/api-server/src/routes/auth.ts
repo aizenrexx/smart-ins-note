@@ -2,6 +2,7 @@ import { Router, type IRouter } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { z } from "zod";
+import { requireAuth } from "../middleware/auth";
 
 const router: IRouter = Router();
 
@@ -29,11 +30,19 @@ const LoginBody = z.object({
   password: z.string().min(1),
 });
 
+const ProfileBody = z.object({
+  name: z.string().min(1, "Name must be at least 1 character").max(80),
+});
+
+const ChangePasswordBody = z.object({
+  currentPassword: z.string().min(1),
+  newPassword: z.string().min(8, "New password must be at least 8 characters"),
+});
+
 router.post("/auth/register", async (req, res) => {
   try {
     const { email, password, name } = RegisterBody.parse(req.body);
 
-    // Check if email already exists
     const checkRes = await fetch(`${usersUrl()}?email=eq.${encodeURIComponent(email)}`, { headers: baseHeaders });
     const existing = await checkRes.json() as Array<unknown>;
     if (existing.length > 0) {
@@ -102,6 +111,76 @@ router.get("/auth/me", async (req, res) => {
     res.json({ user: { id: payload.id, email: payload.email, name: payload.name } });
   } catch {
     res.status(401).json({ error: "Invalid token" });
+  }
+});
+
+router.patch("/auth/profile", requireAuth, async (req, res) => {
+  try {
+    const { name } = ProfileBody.parse(req.body);
+    const userId = req.user!.id;
+
+    const patchRes = await fetch(`${usersUrl()}?id=eq.${encodeURIComponent(userId)}`, {
+      method: "PATCH",
+      headers: { ...baseHeaders, Prefer: "return=representation" },
+      body: JSON.stringify({ name }),
+    });
+
+    if (!patchRes.ok) {
+      const raw = await patchRes.json().catch(() => ({})) as Record<string, unknown>;
+      req.log.error({ raw }, "Failed to update profile");
+      res.status(500).json({ error: "Failed to update profile" });
+      return;
+    }
+
+    const token = jwt.sign(
+      { id: userId, email: req.user!.email, name },
+      JWT_SECRET,
+      { expiresIn: "30d" }
+    );
+    res.json({ token, user: { id: userId, email: req.user!.email, name } });
+  } catch (err) {
+    req.log.error({ err }, "Profile update error");
+    res.status(400).json({ error: err instanceof z.ZodError ? err.issues[0].message : "Failed to update profile" });
+  }
+});
+
+router.post("/auth/change-password", requireAuth, async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = ChangePasswordBody.parse(req.body);
+    const userId = req.user!.id;
+
+    const fetchRes = await fetch(`${usersUrl()}?id=eq.${encodeURIComponent(userId)}`, { headers: baseHeaders });
+    const rows = await fetchRes.json() as Array<Record<string, unknown>>;
+
+    if (!rows.length) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
+
+    const user = rows[0];
+    const valid = await bcrypt.compare(currentPassword, user["password_hash"] as string);
+    if (!valid) {
+      res.status(400).json({ error: "Current password is incorrect" });
+      return;
+    }
+
+    const password_hash = await bcrypt.hash(newPassword, 12);
+    const patchRes = await fetch(`${usersUrl()}?id=eq.${encodeURIComponent(userId)}`, {
+      method: "PATCH",
+      headers: baseHeaders,
+      body: JSON.stringify({ password_hash }),
+    });
+
+    if (!patchRes.ok) {
+      req.log.error({}, "Failed to update password");
+      res.status(500).json({ error: "Failed to update password" });
+      return;
+    }
+
+    res.json({ message: "Password changed successfully" });
+  } catch (err) {
+    req.log.error({ err }, "Change password error");
+    res.status(400).json({ error: err instanceof z.ZodError ? err.issues[0].message : "Failed to change password" });
   }
 });
 

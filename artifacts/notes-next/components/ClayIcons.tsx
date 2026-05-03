@@ -481,3 +481,16 @@ export function ClayAI({ size = 20 }: P) {
     </ToyBase>
   );
 }
+
+/* Analyze — teal bar chart with magnifying glass */
+export function ClayAnalyze({ size = 48 }: P) {
+  return (
+    <ToyBase size={size} id="analyze" c1="#22d3ee" c2="#0891b2" dark="#164e63">
+      <rect x="7"  y="18" width="4" height="8"  rx="1.5" fill="white" fillOpacity="0.90" />
+      <rect x="13" y="13" width="4" height="13" rx="1.5" fill="white" fillOpacity="0.90" />
+      <rect x="19" y="9"  width="4" height="17" rx="1.5" fill="white" fillOpacity="0.90" />
+      <circle cx="23" cy="10" r="4.5" fill="none" stroke="white" strokeWidth="1.8" strokeOpacity="0.88" />
+      <line x1="26.2" y1="13.2" x2="28.5" y2="15.5" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeOpacity="0.88" />
+    </ToyBase>
+  );
+}

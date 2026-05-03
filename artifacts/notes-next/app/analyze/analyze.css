@@ -1,0 +1,89 @@
+/* ════════════════════════════════════════════════════════════
+   SMART INS-NOTE · ANALYZE SYSTEM · 50 CSS EFFECT CLASSES
+   ════════════════════════════════════════════════════════════ */
+
+/* ── GLASS MORPHISM EFFECTS (fx-glass-1 … fx-glass-10) ── */
+.fx-glass-1  { background:rgba(255,255,255,0.06);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,0.14); }
+.fx-glass-2  { background:rgba(99,102,241,0.07);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(99,102,241,0.18); }
+.fx-glass-3  { background:rgba(34,211,238,0.06);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(34,211,238,0.16); }
+.fx-glass-4  { background:rgba(52,211,153,0.06);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(52,211,153,0.15); }
+.fx-glass-5  { background:rgba(232,121,249,0.06);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(232,121,249,0.16); }
+.fx-glass-6  { background:rgba(0,0,0,0.30);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,0.08); }
+.fx-glass-7  { background:rgba(251,191,36,0.07);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(251,191,36,0.18); }
+.fx-glass-8  { background:rgba(248,113,113,0.06);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(248,113,113,0.16); }
+.fx-glass-9  { background:rgba(255,255,255,0.12);backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);border:1px solid rgba(255,255,255,0.22);box-shadow:0 8px 32px rgba(0,0,0,0.08); }
+.fx-glass-10 { background:linear-gradient(135deg,rgba(255,255,255,0.09),rgba(255,255,255,0.04));backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.12); }
+
+/* ── NEON GLOW EFFECTS (fx-neon-1 … fx-neon-10) ── */
+.fx-neon-1  { box-shadow:0 0 16px rgba(99,102,241,0.35),0 0 40px rgba(99,102,241,0.12),inset 0 0 16px rgba(99,102,241,0.06);animation:g01 4s ease-in-out infinite; }
+.fx-neon-2  { box-shadow:0 0 16px rgba(34,211,238,0.35),0 0 40px rgba(34,211,238,0.12),inset 0 0 16px rgba(34,211,238,0.06);animation:g04 4s ease-in-out infinite; }
+.fx-neon-3  { box-shadow:0 0 16px rgba(52,211,153,0.35),0 0 40px rgba(52,211,153,0.12),inset 0 0 16px rgba(52,211,153,0.06);animation:g05 4s ease-in-out infinite; }
+.fx-neon-4  { box-shadow:0 0 16px rgba(232,121,249,0.35),0 0 40px rgba(232,121,249,0.12),inset 0 0 16px rgba(232,121,249,0.06);animation:g03 4s ease-in-out infinite; }
+.fx-neon-5  { box-shadow:0 0 16px rgba(251,191,36,0.35),0 0 40px rgba(251,191,36,0.12),inset 0 0 16px rgba(251,191,36,0.06);animation:g06 4s ease-in-out infinite; }
+.fx-neon-6  { box-shadow:0 0 16px rgba(248,113,113,0.35),0 0 40px rgba(248,113,113,0.12),inset 0 0 16px rgba(248,113,113,0.06);animation:g07 4s ease-in-out infinite; }
+.fx-neon-7  { box-shadow:0 0 20px rgba(139,92,246,0.4),0 0 60px rgba(139,92,246,0.15);animation:g02 3.5s ease-in-out infinite; }
+.fx-neon-8  { box-shadow:0 0 0 0 rgba(99,102,241,0.5);animation:rp04 2.5s ease-out infinite; }
+.fx-neon-9  { box-shadow:0 0 8px rgba(99,102,241,0.2);animation:g19 6s linear infinite; }
+.fx-neon-10 { box-shadow:0 0 24px rgba(99,102,241,0.5),0 0 48px rgba(139,92,246,0.25),0 0 80px rgba(232,121,249,0.1);animation:g24 5s ease-in-out infinite; }
+
+/* ── GRADIENT BACKGROUND EFFECTS (fx-grad-1 … fx-grad-10) ── */
+.fx-grad-1  { background:linear-gradient(135deg,rgba(99,102,241,0.12),rgba(139,92,246,0.10),rgba(232,121,249,0.07)); }
+.fx-grad-2  { background:linear-gradient(135deg,rgba(34,211,238,0.10),rgba(99,102,241,0.10),rgba(139,92,246,0.08)); }
+.fx-grad-3  { background:linear-gradient(135deg,rgba(52,211,153,0.10),rgba(34,211,238,0.08)); }
+.fx-grad-4  { background:linear-gradient(135deg,rgba(251,191,36,0.10),rgba(249,115,22,0.08)); }
+.fx-grad-5  { background:linear-gradient(135deg,rgba(248,113,113,0.10),rgba(232,121,249,0.08)); }
+.fx-grad-6  { background:linear-gradient(45deg,rgba(99,102,241,0.08),rgba(52,211,153,0.08),rgba(251,191,36,0.08));background-size:300% 300%;animation:gr01 8s ease infinite; }
+.fx-grad-7  { background:conic-gradient(from 180deg at 50% 50%,rgba(99,102,241,0.08),rgba(232,121,249,0.08),rgba(34,211,238,0.08),rgba(99,102,241,0.08)); }
+.fx-grad-8  { background:radial-gradient(ellipse at top left,rgba(99,102,241,0.15),transparent 60%),radial-gradient(ellipse at bottom right,rgba(139,92,246,0.10),transparent 60%); }
+.fx-grad-9  { background:linear-gradient(180deg,rgba(99,102,241,0.06) 0%,rgba(0,0,0,0) 100%); }
+.fx-grad-10 { background:linear-gradient(135deg,rgba(139,92,246,0.08),rgba(232,121,249,0.06),rgba(96,165,250,0.08));background-size:400% 400%;animation:gr02 12s ease infinite; }
+
+/* ── BORDER / OUTLINE EFFECTS (fx-border-1 … fx-border-10) ── */
+.fx-border-1  { border:1px solid rgba(99,102,241,0.30);animation:g01 4s ease-in-out infinite; }
+.fx-border-2  { border:1px solid rgba(34,211,238,0.30);animation:g04 4s ease-in-out infinite; }
+.fx-border-3  { border:1px solid rgba(52,211,153,0.30);animation:g05 5s ease-in-out infinite; }
+.fx-border-4  { border:1px solid rgba(232,121,249,0.30);animation:g03 4.5s ease-in-out infinite; }
+.fx-border-5  { border:1px solid rgba(251,191,36,0.30);animation:g06 5s ease-in-out infinite; }
+.fx-border-6  { border:1px solid transparent;background-clip:padding-box;box-shadow:0 0 0 1px rgba(99,102,241,0.25),0 0 0 1px rgba(232,121,249,0.15); }
+.fx-border-7  { border:1px dashed rgba(99,102,241,0.30);animation:gr09 6s linear infinite; }
+.fx-border-8  { border:2px solid;border-image:linear-gradient(90deg,rgba(99,102,241,0.4),rgba(232,121,249,0.4),rgba(34,211,238,0.4),rgba(99,102,241,0.4)) 1;animation:gr01 4s linear infinite; }
+.fx-border-9  { outline:1px solid rgba(255,255,255,0.1);outline-offset:4px; }
+.fx-border-10 { border:1px solid rgba(255,255,255,0.08);box-shadow:0 1px 0 rgba(255,255,255,0.06) inset; }
+
+/* ── TEXT & SPECIAL CARD EFFECTS (fx-text-1 … fx-text-10) ── */
+.fx-text-1  { background:linear-gradient(90deg,#818cf8,#e879f9,#60a5fa,#818cf8);background-size:300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:sh01 5s linear infinite; }
+.fx-text-2  { text-shadow:0 0 10px rgba(99,102,241,0.6),0 0 30px rgba(99,102,241,0.3);animation:g14 3s ease-in-out infinite; }
+.fx-text-3  { background:linear-gradient(135deg,#6366f1,#8b5cf6,#e879f9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+.fx-text-4  { animation:gl03 8s ease-in-out infinite; }
+.fx-text-5  { text-shadow:2px 2px 4px rgba(0,0,0,0.4),-1px -1px 0 rgba(255,255,255,0.1); }
+.fx-text-6  { background:linear-gradient(180deg,rgba(99,102,241,0.15) 0%,transparent 100%);border-radius:8px;padding:2px 8px; }
+.fx-text-7  { background:linear-gradient(135deg,#22d3ee,#6366f1,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+.fx-text-8  { background:linear-gradient(135deg,#fbbf24,#f59e0b,#d97706);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+.fx-text-9  { background:linear-gradient(135deg,#34d399,#10b981,#059669);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+.fx-text-10 { letter-spacing:0.5px;background:linear-gradient(135deg,#fb7185,#f43f5e,#e11d48);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+
+/* ── CARD HOVER LIFT ── */
+.ana-card { transition:transform 0.22s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.22s; }
+.ana-card:hover { transform:translateY(-3px) scale(1.015);box-shadow:0 12px 40px rgba(0,0,0,0.15); }
+
+/* ── BAR FILL ANIMATION ── */
+@keyframes barGrow { from { width: 0; } to { width: var(--bar-w, 100%); } }
+.fx-bar-grow { animation: barGrow 0.8s cubic-bezier(0.34,1.56,0.64,1) both; }
+@keyframes barGrowH { from { height: 0; } to { height: var(--bar-h, 100%); } }
+.fx-bar-grow-h { animation: barGrowH 0.6s cubic-bezier(0.34,1.56,0.64,1) both; }
+
+/* ── COUNTER FADE IN ── */
+@keyframes numPop { 0%{opacity:0;transform:scale(0.7) translateY(10px)} 60%{transform:scale(1.08) translateY(-2px)} 100%{opacity:1;transform:scale(1) translateY(0)} }
+.fx-num-pop { animation: numPop 0.55s cubic-bezier(0.34,1.56,0.64,1) both; }
+
+/* ── FLOATING PARTICLE ── */
+@keyframes floatParticle { 0%,100%{transform:translateY(0) scale(1);opacity:0.6} 50%{transform:translateY(-18px) scale(1.1);opacity:1} }
+.fx-particle { animation: floatParticle 3s ease-in-out infinite; }
+
+/* ── HEATMAP CELL PULSE ── */
+@keyframes heatPop { 0%{transform:scale(0);opacity:0} 70%{transform:scale(1.2)} 100%{transform:scale(1);opacity:1} }
+.fx-heat-pop { animation: heatPop 0.4s cubic-bezier(0.34,1.56,0.64,1) both; }
+
+/* ── PAGE ENTRY ── */
+@keyframes pageReveal { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+.fx-page-reveal { animation: pageReveal 0.6s cubic-bezier(0.4,0,0.2,1) both; }

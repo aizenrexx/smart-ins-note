@@ -9,7 +9,7 @@ import type { Tag as TagType } from "@/lib/api";
 import {
   ClayNotes, ClayPin, ClayStar, ClayArchive, ClayTrash,
   ClayHash, ClaySettings, ClayKeyboard, ClayHome,
-  ClaySun, ClayMoon, ClayBook,
+  ClaySun, ClayMoon, ClayBook, ClayAnalyze,
 } from "./ClayIcons";
 
 interface Props {
@@ -253,6 +253,23 @@ export function Sidebar({ view, activeTagId, tags, counts, onViewChange, onTagCl
 
       {/* Footer */}
       <div style={{ padding: "10px 10px 12px", display: "flex", flexDirection: "column", gap: 2, borderTop: "1px solid var(--border)" }}>
+
+        {/* Analyze */}
+        <Link href="/analyze"
+          style={{
+            background: "linear-gradient(135deg,rgba(34,211,238,0.10),rgba(99,102,241,0.10))",
+            border: "1px solid rgba(34,211,238,0.20)", borderRadius: 10,
+            padding: "7px 10px", cursor: "pointer", color: "#22d3ee",
+            fontSize: 11.5, display: "flex", alignItems: "center", gap: 9,
+            fontWeight: 600, transition: "all 0.15s", textDecoration: "none",
+            marginBottom: 2,
+          }}
+          onMouseEnter={(e: React.MouseEvent) => { (e.currentTarget as HTMLElement).style.background = "linear-gradient(135deg,rgba(34,211,238,0.20),rgba(99,102,241,0.18))"; (e.currentTarget as HTMLElement).style.boxShadow = "0 0 16px rgba(34,211,238,0.18)"; }}
+          onMouseLeave={(e: React.MouseEvent) => { (e.currentTarget as HTMLElement).style.background = "linear-gradient(135deg,rgba(34,211,238,0.10),rgba(99,102,241,0.10))"; (e.currentTarget as HTMLElement).style.boxShadow = "none"; }}>
+          <ClayAnalyze size={22} />
+          Analyze
+          <span style={{ marginLeft: "auto", fontSize: 10, opacity: 0.55, fontWeight: 400 }}>Stats</span>
+        </Link>
 
         {/* Settings */}
         <Link href="/settings"

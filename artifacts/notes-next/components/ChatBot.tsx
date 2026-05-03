@@ -218,7 +218,7 @@ export function ChatBot({ notes, onCreateNote, onUpdateNote, onDeleteNote, onOpe
   }, [open, listening]);
 
   function addDisplay(msg: Omit<DisplayMessage, "id">) {
-    const id = Math.random().toString(36).slice(2);
+    const id = `${Date.now()}-${messages.length + 1}`;
     setMessages(prev => [...prev, { ...msg, id }]);
   }
 
@@ -235,7 +235,14 @@ export function ChatBot({ notes, onCreateNote, onUpdateNote, onDeleteNote, onOpe
     const rect = sendBtnRef.current.getBoundingClientRect();
     const cx = rect.left + rect.width / 2;
     const cy = rect.top + rect.height / 2;
-    const newS = Array.from({ length: 8 }, (_, i) => ({ id: Date.now() + i, x: cx + (Math.random() - 0.5) * 60, y: cy + (Math.random() - 0.5) * 60 }));
+    const det = (i: number, salt: number) => {
+      let x = (i + 1) * 1103515245 + salt * 12345;
+      x ^= x << 13;
+      x ^= x >> 17;
+      x ^= x << 5;
+      return ((x >>> 0) % 1000) / 1000;
+    };
+    const newS = Array.from({ length: 8 }, (_, i) => ({ id: Date.now() + i, x: cx + (det(i, 1) - 0.5) * 60, y: cy + (det(i, 2) - 0.5) * 60 }));
     setSparkles(newS);
     setTimeout(() => setSparkles([]), 700);
   }

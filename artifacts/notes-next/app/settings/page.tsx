@@ -705,7 +705,7 @@ function AccountSection() {
   function handleSignOut() {
     setSigningOut(true);
     clearAuth();
-    router.push("/notes-next/auth");
+    router.push("/auth");
   }
 
   return (
@@ -817,7 +817,7 @@ export default function SettingsPage() {
       }}>
         {/* Back button */}
         <div style={{ padding: "14px 14px 10px" }}>
-          <Link href="/notes-next/notes" style={{ display: "inline-flex", alignItems: "center", gap: 7, textDecoration: "none", color: "var(--text-muted)", fontSize: 13, fontWeight: 500, padding: "6px 10px", borderRadius: 8, background: "var(--bg-hover)", transition: "all 0.12s" }}>
+          <Link href="/notes" style={{ display: "inline-flex", alignItems: "center", gap: 7, textDecoration: "none", color: "var(--text-muted)", fontSize: 13, fontWeight: 500, padding: "6px 10px", borderRadius: 8, background: "var(--bg-hover)", transition: "all 0.12s" }}>
             <ArrowLeft size={14} />
             Back to Notes
           </Link>

@@ -255,7 +255,7 @@ export function Sidebar({ view, activeTagId, tags, counts, onViewChange, onTagCl
       <div style={{ padding: "10px 10px 12px", display: "flex", flexDirection: "column", gap: 2, borderTop: "1px solid var(--border)" }}>
 
         {/* Settings */}
-        <Link href="/notes-next/settings"
+        <Link href="/settings"
           style={{
             background: "linear-gradient(135deg,rgba(99,102,241,0.12),rgba(139,92,246,0.12))",
             border: "1px solid rgba(99,102,241,0.22)", borderRadius: 10,
